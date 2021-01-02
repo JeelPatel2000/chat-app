@@ -10,6 +10,7 @@ async function init() {
 	});
 
 	var videoElement = createVideoElement();
+	videoElement.muted = true;
 
 	videoElement.style.cssText = "transform: scale(-1, 1); filter: FlipH;";
 
