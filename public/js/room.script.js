@@ -9,7 +9,7 @@ async function init() {
 		socket.emit("join-room", ROOM_ID, USER_ID);
 	});
 
-	var videoElement = document.createElement("video");
+	var videoElement = createVideoElement();
 
 	videoElement.style.cssText = "transform: scale(-1, 1); filter: FlipH;";
 
@@ -23,7 +23,7 @@ async function init() {
 		peer.on("call", (call) => {
 			call.answer(stream);
 
-			const video = document.createElement("video");
+			const video = createVideoElement();
 			call.on("stream", (otherUserVideoStream) => {
 				addVideoStream(video, otherUserVideoStream);
 			});
@@ -40,6 +40,12 @@ async function init() {
 		console.error("Error accessing media devices.", error);
 	}
 
+	function createVideoElement() {
+		var video = document.createElement("video");
+		video.playsInline = true;
+		return video;
+	}
+
 	function addVideoStream(video, stream) {
 		video.srcObject = stream;
 		video.addEventListener("loadedmetadata", () => {
@@ -50,7 +56,7 @@ async function init() {
 
 	function connectToNewUser(userID, stream) {
 		const call = peer.call(userID, stream);
-		const video = document.createElement("video");
+		const video = createVideoElement();
 		call.on("stream", (userVideoStream) => {
 			addVideoStream(video, userVideoStream);
 		});
